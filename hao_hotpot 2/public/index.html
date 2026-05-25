@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  HAO HOT POT — Production Single-Page Dining System
+  University Project: Smart Restaurant & Cultural Integration
+  Travel Management — Smart Campus Technology
+
+  Tech: HTML5, Tailwind CSS, Vanilla JavaScript
+  Sections: Home | Menu | Reservation (JS-toggled)
+  Features: QR Code (static URL), YouTube Video, Google Maps,
+            Interactive USP Modals, Booking Confirmation
+  ============================================================
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HAO HOT POT — Smart Restaurant Valencia</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- QR Code generation library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-[#0A0A0A] text-[#F5F0E8]">
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0A0A0A]/90 backdrop-blur-lg border-b border-white/[0.04]">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 h-16 sm:h-[72px] flex items-center justify-between">
+      <a href="#" onclick="switchSection('home');return false;" class="font-['Playfair_Display'] text-lg sm:text-xl font-semibold tracking-tight">
+        HAO <span class="text-[#D4AF37] font-normal">HOT POT</span>
+      </a>
+      <div class="flex items-center gap-6 sm:gap-8">
+        <a href="#" onclick="switchSection('home');return false;" class="nav-link text-[0.65rem] uppercase tracking-[1.5px] text-white/40 hover:text-[#D4AF37] transition-colors" data-section="home">Home</a>
+        <a href="#" onclick="switchSection('menu');return false;" class="nav-link text-[0.65rem] uppercase tracking-[1.5px] text-white/40 hover:text-[#D4AF37] transition-colors" data-section="menu">Menu</a>
+        <a href="#" onclick="switchSection('reservation');return false;" class="nav-link text-[0.65rem] uppercase tracking-[1.5px] text-white/40 hover:text-[#D4AF37] transition-colors" data-section="reservation">Reserve</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       SECTION: HOME
+       ============================================================ -->
+  <section id="section-home" class="page-section active">
+
+    <!-- Hero -->
+    <div class="relative min-h-screen flex items-center justify-center overflow-hidden px-5 sm:px-8">
+      <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1583032015879-e5022cb87c3b?w=1600&q=80" alt="Steaming hot pot" class="w-full h-full object-cover" />
+      </div>
+      <div class="absolute inset-0 hero-overlay z-[1]"></div>
+      <div id="particles" class="absolute inset-0 z-[1] overflow-hidden pointer-events-none"></div>
+
+      <div class="relative z-[2] text-center max-w-5xl mx-auto pt-16">
+        <div class="inline-flex items-center gap-2 border border-[#D4AF37]/30 px-5 py-2 mb-8 tracking-[3px] text-[0.6rem] font-semibold uppercase text-[#D4AF37]">
+          <span class="w-2 h-2 rounded-full bg-[#C41E3A]"></span>
+          Smart Restaurant &middot; Since 2024
+        </div>
+        <h1 class="text-[clamp(3.2rem,10vw,7rem)] font-bold leading-[1.05] tracking-[-0.03em] mb-2">
+          HAO <span class="text-[#D4AF37]">HOT POT</span>
+        </h1>
+        <p class="font-['Playfair_Display'] text-lg sm:text-xl italic text-white/50 mb-10">
+          Where tradition meets theatrical dining
+        </p>
+        <div class="divider mb-12"></div>
+
+        <!-- Clickable USP Cards -->
+        <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 max-w-3xl mx-auto">
+          <div onclick="openUspModal('immersive')" class="usp-card flex-1 border border-white/[0.06] bg-white/[0.03] backdrop-blur-[6px] px-6 py-5 transition-all duration-500 hover:border-[#D4AF37]/30 hover:bg-white/[0.06]">
+            <div class="text-[#D4AF37] text-2xl mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+            </div>
+            <h3 class="font-['Playfair_Display'] text-lg text-[#D4AF37] mb-1">Immersive<br />Experience</h3>
+            <p class="text-xs text-white/40 leading-relaxed">Multi-sensory dining with ambient storytelling</p>
+          </div>
+          <div onclick="openUspModal('lamian')" class="usp-card flex-1 border border-white/[0.06] bg-white/[0.03] backdrop-blur-[6px] px-6 py-5 transition-all duration-500 hover:border-[#D4AF37]/30 hover:bg-white/[0.06]">
+            <div class="text-[#D4AF37] text-2xl mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
+              </svg>
+            </div>
+            <h3 class="font-['Playfair_Display'] text-lg text-[#D4AF37] mb-1">La Mian<br />Show</h3>
+            <p class="text-xs text-white/40 leading-relaxed">Hand-pulled noodle artistry at your table</p>
+          </div>
+          <div onclick="openUspModal('service')" class="usp-card flex-1 border border-white/[0.06] bg-white/[0.03] backdrop-blur-[6px] px-6 py-5 transition-all duration-500 hover:border-[#D4AF37]/30 hover:bg-white/[0.06]">
+            <div class="text-[#D4AF37] text-2xl mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+              </svg>
+            </div>
+            <h3 class="font-['Playfair_Display'] text-lg text-[#D4AF37] mb-1">Premium<br />Service</h3>
+            <p class="text-xs text-white/40 leading-relaxed">Dedicated host &amp; curated table experience</p>
+          </div>
+        </div>
+
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#D4AF37]/40 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features / Core Values -->
+    <div class="py-24 sm:py-32 px-5 sm:px-8 bg-[#0F0F0F]">
+      <div class="max-w-5xl mx-auto">
+        <div class="reveal text-center mb-16">
+          <div class="inline-block border border-[#D4AF37]/20 px-4 py-1.5 mb-5 tracking-[3px] text-[0.55rem] font-semibold uppercase text-[#D4AF37]">
+            Smart Restaurant Concept
+          </div>
+          <h2 class="text-[clamp(1.8rem,4vw,2.8rem)] font-semibold leading-[1.15] mb-4">
+            Three Pillars of <span class="text-[#D4AF37]">HAO</span>
+          </h2>
+          <p class="text-white/40 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+            Rooted in <strong class="text-white/60">Travel Management</strong> research on Smart Campus technology
+            and cultural integration in hospitality. Every decision at HAO HOT POT is guided by
+            three core values that bridge tradition with innovation.
+          </p>
+        </div>
+
+        <div class="grid sm:grid-cols-3 gap-5 sm:gap-6">
+          <div class="reveal delay-1 value-card rounded-xl p-6 sm:p-8 text-center">
+            <div class="value-card__icon mx-auto mb-6">
+              <svg class="w-6 h-6 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">Ultimate Service</h3>
+            <p class="text-white/40 text-sm leading-relaxed">
+              Technology-enabled personalisation powered by a smart reservation system
+              that anticipates dietary needs, celebrates special occasions, and remembers
+              your preferences across visits. Every guest is treated as a returning friend.
+            </p>
+          </div>
+          <div class="reveal delay-2 value-card rounded-xl p-6 sm:p-8 text-center">
+            <div class="value-card__icon mx-auto mb-6">
+              <svg class="w-6 h-6 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">Immersive Experience</h3>
+            <p class="text-white/40 text-sm leading-relaxed">
+              Multi-sensory dining environments enhanced by curated lighting, spatial
+              audio, and the theatrical flair of our La Mian Show. Drawing on principles
+              of <strong class="text-white/50">experiential travel</strong>, every meal is designed as a memory, not just a dish.
+            </p>
+          </div>
+          <div class="reveal delay-3 value-card rounded-xl p-6 sm:p-8 text-center">
+            <div class="value-card__icon mx-auto mb-6">
+              <svg class="w-6 h-6 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">Digital Interaction</h3>
+            <p class="text-white/40 text-sm leading-relaxed">
+              A fully integrated <strong class="text-white/50">Smart Campus</strong> ecosystem: QR-code menus,
+              digital reservations, and contactless service flow. Our digital layer removes
+              friction while adding delight — reflecting the future of hospitality
+              technology in Travel Management curricula.
+            </p>
+          </div>
+        </div>
+
+        <div class="reveal mt-12 max-w-2xl mx-auto text-center">
+          <div class="border border-white/[0.04] bg-white/[0.02] rounded-lg p-5">
+            <p class="text-white/30 text-xs leading-relaxed">
+              <strong class="text-white/50">Academic Context:</strong> This project applies Smart Restaurant
+              technology frameworks studied within the Travel Management programme —
+              integrating QR-based interaction, data-driven service personalisation, and
+              cultural heritage presentation through the lens of smart tourism theory.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About Us -->
+    <div class="py-24 sm:py-32 px-5 sm:px-8 bg-[#0F0F0F] border-t border-white/[0.04]">
+      <div class="max-w-5xl mx-auto">
+        <div class="grid sm:grid-cols-2 gap-12 sm:gap-16 items-center">
+          <div class="reveal">
+            <div class="inline-block border border-[#D4AF37]/20 px-4 py-1.5 mb-5 tracking-[3px] text-[0.55rem] font-semibold uppercase text-[#D4AF37]">
+              About HAO
+            </div>
+            <h2 class="text-[clamp(1.6rem,3.5vw,2.4rem)] font-semibold leading-[1.15] mb-5">
+              Where <span class="text-[#D4AF37]">Tradition</span> Meets Smart Hospitality
+            </h2>
+            <p class="text-white/45 text-sm leading-relaxed mb-4">
+              HAO HOT POT was born from a vision: to bring the rich culinary heritage
+              of Chinese hot pot to Valencia while reimagining the dining experience
+              through <strong class="text-white/60">Smart Restaurant technology</strong>. Every element — from our
+              QR-based digital ecosystem to our data-aware reservation system —
+              reflects the principles of <strong class="text-white/60">Smart Campus</strong> innovation studied in
+              modern Travel Management.
+            </p>
+            <p class="text-white/45 text-sm leading-relaxed mb-4">
+              Our name, <strong class="text-white/60">"HAO" (好)</strong>, means "good" in Chinese — a simple promise
+              that guides everything we do. We source the finest ingredients, train
+              our La Mian masters for months, and design every space to transport
+              our guests into a world where dining is theatre.
+            </p>
+            <p class="text-white/45 text-sm leading-relaxed">
+              This project serves as a practical exploration of how digital tools
+              can enhance cultural hospitality experiences — a core research area
+              within the <strong class="text-white/60">Travel Management</strong> programme's focus on smart tourism
+              and sustainable cultural integration.
+            </p>
+          </div>
+          <div class="reveal delay-2">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-white/[0.02] border border-white/[0.04] rounded-xl p-6 text-center">
+                <div class="text-[#D4AF37] font-['Playfair_Display'] text-3xl font-bold">2024</div>
+                <div class="text-white/30 text-xs uppercase tracking-[1px] mt-1">Founded</div>
+              </div>
+              <div class="bg-white/[0.02] border border-white/[0.04] rounded-xl p-6 text-center">
+                <div class="text-[#D4AF37] font-['Playfair_Display'] text-3xl font-bold">20€</div>
+                <div class="text-white/30 text-xs uppercase tracking-[1px] mt-1">Set Menu / Person</div>
+              </div>
+              <div class="bg-white/[0.02] border border-white/[0.04] rounded-xl p-6 text-center">
+                <div class="text-[#D4AF37] font-['Playfair_Display'] text-3xl font-bold">3</div>
+                <div class="text-white/30 text-xs uppercase tracking-[1px] mt-1">Core Values</div>
+              </div>
+              <div class="bg-white/[0.02] border border-white/[0.04] rounded-xl p-6 text-center">
+                <div class="text-[#D4AF37] font-['Playfair_Display'] text-3xl font-bold">QR</div>
+                <div class="text-white/30 text-xs uppercase tracking-[1px] mt-1">Smart Ecosystem</div>
+              </div>
+            </div>
+            <div class="mt-5 border border-[#D4AF37]/10 bg-[#D4AF37]/[0.02] rounded-lg p-4 text-center">
+              <p class="text-white/30 text-xs leading-relaxed">
+                &#x2616; Travel Management Project &middot; Smart Restaurant &amp; Cultural Integration Research
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         LOCATION SECTION — Google Maps Integration
+         Interactive map centered at Carrer del Pelai, 21, 46002 València.
+         Includes a "Get Directions" link to Google Maps navigation.
+         ============================================================ -->
+    <div class="py-24 sm:py-32 px-5 sm:px-8" id="location">
+      <div class="max-w-5xl mx-auto">
+        <div class="reveal text-center mb-12">
+          <div class="inline-block border border-[#D4AF37]/20 px-4 py-1.5 mb-5 tracking-[3px] text-[0.55rem] font-semibold uppercase text-[#D4AF37]">
+            Find Us
+          </div>
+          <h2 class="text-[clamp(1.8rem,4vw,2.8rem)] font-semibold leading-[1.15] mb-4">
+            Visit <span class="text-[#D4AF37]">HAO</span> in Valencia
+          </h2>
+          <p class="text-white/40 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+            We're located in the heart of the city. Drop by for an unforgettable
+            hot pot experience.
+          </p>
+        </div>
+
+        <!-- Google Maps Embed -->
+        <!--
+          The iframe below uses the Google Maps Embed API via the "place" mode.
+          The "q" parameter is the location query. No API key is required for
+          basic embed functionality with this endpoint.
+          Replace the src URL with your own API key for production use:
+          https://www.google.com/maps/embed/v1/place?key=YOUR_KEY&q=Carrer+del+Pelai+21+46002+València
+        -->
+        <div class="reveal delay-1 max-w-3xl mx-auto">
+          <div class="map-container shadow-lg shadow-black/20">
+            <iframe
+              src="https://www.google.com/maps?q=Carrer+del+Pelai,+21,+46002+València,+Spain&output=embed"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="HAO HOT POT location on Google Maps">
+            </iframe>
+          </div>
+
+          <!-- Address & Get Directions -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 bg-white/[0.02] border border-white/[0.04] rounded-xl p-5">
+            <div class="flex items-center gap-3">
+              <svg class="w-5 h-5 text-[#D4AF37] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+              </svg>
+              <div>
+                <p class="text-sm text-white/80">Carrer del Pelai, 21</p>
+                <p class="text-xs text-white/40">46002 València, Spain</p>
+              </div>
+            </div>
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=Carrer+del+Pelai+21+46002+València"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 bg-[#C41E3A] hover:bg-[#A01830] text-white text-[0.65rem] font-semibold uppercase tracking-[2px] px-6 py-3 rounded-lg transition-all duration-300 shrink-0"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+              </svg>
+              Get Directions
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QR Section (Home) -->
+    <div class="py-24 sm:py-32 px-5 sm:px-8 bg-[#0F0F0F]" id="qr-section">
+      <div class="max-w-4xl mx-auto text-center">
+        <div class="reveal">
+          <div class="inline-block border border-[#D4AF37]/20 px-4 py-1.5 mb-5 tracking-[3px] text-[0.55rem] font-semibold uppercase text-[#D4AF37]">
+            Digital Ecosystem
+          </div>
+          <h2 class="text-[clamp(1.8rem,4vw,2.8rem)] font-semibold leading-[1.15] mb-4">
+            Scan &amp; <span class="text-[#D4AF37]">Savour</span>
+          </h2>
+          <p class="text-white/40 text-sm sm:text-base max-w-xl mx-auto mb-12 leading-relaxed">
+            Tap the QR code below to access our <strong class="text-white/60">full digital menu</strong>,
+            place your order, or explore our curated dining packages — all from your phone.
+          </p>
+        </div>
+
+        <div class="reveal delay-1 flex justify-center mb-10">
+          <div onclick="openQrModal()"
+               class="cursor-pointer w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] bg-white/[0.03] border-2 border-dashed border-[#D4AF37]/30 rounded-2xl flex flex-col items-center justify-center transition-all duration-500 hover:border-[#D4AF37]/60 hover:bg-white/[0.06] hover:scale-105">
+            <svg class="w-12 h-12 text-[#D4AF37]/50 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 14.625v0a1.125 1.125 0 011.125-1.125h1.125v1.125a1.125 1.125 0 01-1.125 1.125h-1.125v-1.125zM18 14.625v0h1.125a1.125 1.125 0 011.125 1.125v1.125H19.5a1.125 1.125 0 01-1.125-1.125v-1.125zM16.875 18h-1.125v-1.125H16.875V18zM19.5 16.875h1.125V18H19.5v-1.125zM18 18h1.125v1.125H18V18z" />
+            </svg>
+            <span class="text-[0.6rem] uppercase tracking-[2px] text-[#D4AF37]/60 font-semibold">Tap to Order</span>
+            <span class="text-[0.45rem] uppercase tracking-[2px] text-white/15 mt-1.5">QR Digital Menu</span>
+          </div>
+        </div>
+
+        <div class="reveal delay-2 flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#" onclick="switchSection('reservation');return false;"
+             class="inline-flex items-center gap-2 bg-[#C41E3A] hover:bg-[#A01830] text-white text-[0.7rem] font-semibold uppercase tracking-[2.5px] px-8 py-4 transition-all duration-300">
+            Reserve a Table
+          </a>
+          <a href="#" onclick="switchSection('menu');return false;"
+             class="inline-flex items-center gap-2 border border-[#D4AF37]/30 text-[#D4AF37] hover:bg-[#D4AF37]/10 text-[0.7rem] font-semibold uppercase tracking-[2.5px] px-8 py-4 transition-all duration-300">
+            View Menu
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       SECTION: MENU
+       Haidilao-inspired menu categories with 20€/person set logic.
+       ============================================================ -->
+  <section id="section-menu" class="page-section">
+
+    <!-- Menu Hero -->
+    <div class="relative pt-16 sm:pt-[72px] min-h-[40vh] sm:min-h-[45vh] flex items-center justify-center overflow-hidden">
+      <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=1600&q=80" alt="Hot pot ingredients" class="w-full h-full object-cover" />
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/70 via-[#0A0A0A]/60 to-[#0A0A0A]/90 z-[1]"></div>
+      <div class="relative z-[2] text-center px-5 max-w-3xl pt-8">
+        <div class="inline-flex items-center gap-2 border border-[#D4AF37]/20 px-4 py-1.5 mb-5 tracking-[3px] text-[0.55rem] font-semibold uppercase text-[#D4AF37]">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#C41E3A]"></span>
+          Carta
+        </div>
+        <h1 class="text-[clamp(2.2rem,6vw,4rem)] font-bold leading-[1.1] mb-3">The <span class="text-[#D4AF37]">HAO</span> Menu</h1>
+        <p class="text-white/50 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+          Inspired by the legendary <strong class="text-white/70">Haidilao</strong> hot pot tradition. A carefully curated
+          selection of premium ingredients designed at <strong class="text-white/70">20€ per person</strong> —
+          a balanced feast of broths, meats, vegetables, handmade staples, and drinks.
+        </p>
+      </div>
+    </div>
+
+    <!-- Set Menu -->
+    <div class="py-16 sm:py-20 px-5 sm:px-8 bg-[#0F0F0F]">
+      <div class="max-w-5xl mx-auto">
+        <div class="reveal set-badge rounded-xl p-6 sm:p-8 max-w-2xl mx-auto text-center">
+          <div class="text-[#D4AF37] text-[0.55rem] uppercase tracking-[3px] font-semibold mb-2">Chef's Recommendation</div>
+          <h2 class="text-xl sm:text-2xl font-semibold mb-2">The HAO Set &middot; <span class="text-[#D4AF37]">20€</span><span class="text-white/30 text-sm">/person</span></h2>
+          <p class="text-white/40 text-xs sm:text-sm leading-relaxed mb-4">
+            Choose <strong class="text-white/60">1 soup base</strong> + <strong class="text-white/60">2 meats</strong> +
+            <strong class="text-white/60">1 vegetable</strong> + <strong class="text-white/60">1 staple</strong> +
+            <strong class="text-white/60">1 snack</strong> + <strong class="text-white/60">1 drink</strong>.
+          </p>
+          <a href="#" onclick="switchSection('reservation');return false;" class="inline-flex items-center gap-2 bg-[#C41E3A] hover:bg-[#A01830] text-white text-[0.65rem] font-semibold uppercase tracking-[2px] px-6 py-3 transition-all duration-300">
+            Book This Set
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menu Grid -->
+    <div class="py-16 sm:py-24 px-5 sm:px-8">
+      <div class="max-w-5xl mx-auto">
+
+        <!-- Soup Bases -->
+        <div class="reveal mb-14">
+          <div class="flex items-center gap-4 mb-8">
+            <span class="text-2xl">&#x1F372;</span>
+            <div>
+              <h2 class="text-xl sm:text-2xl font-semibold">Soup Bases</h2>
+              <p class="text-white/30 text-xs sm:text-sm">The foundation of every great hot pot</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Classic Sichuan Spicy Broth</h3><p class="text-white/40 text-xs mt-1">Numbing peppercorns, dried chillies, fermented bean paste</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">Incl.</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Tomato &amp; Ginger Broth</h3><p class="text-white/40 text-xs mt-1">Slow-simmered tomatoes, fresh ginger, goji berries</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">Incl.</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Mushroom Truffle Broth</h3><p class="text-white/40 text-xs mt-1">Wild mushrooms, black truffle oil, thyme</p></div>
+              <span class="text-white/50 text-sm ml-3 whitespace-nowrap">+1.5€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Tom Yum Kung Broth</h3><p class="text-white/40 text-xs mt-1">Lemongrass, galangal, lime leaves, chili paste</p></div>
+              <span class="text-white/50 text-sm ml-3 whitespace-nowrap">+1.5€</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Premium Meats -->
+        <div class="reveal mb-14">
+          <div class="flex items-center gap-4 mb-8">
+            <span class="text-2xl">&#x1F969;</span>
+            <div>
+              <h2 class="text-xl sm:text-2xl font-semibold">Premium Meats <span class="text-[0.5rem] text-[#D4AF37]/50 uppercase tracking-[2px] align-middle ml-2">Haidilao Style</span></h2>
+              <p class="text-white/30 text-xs sm:text-sm">Prime cuts, sliced paper-thin for shabu-shabu</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Premium Sliced Ribeye</h3><p class="text-white/40 text-xs mt-1">Marbled USDA Choice, thin-cut for 8-second dip</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">5.5€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Australian Lamb Shoulder</h3><p class="text-white/40 text-xs mt-1">Tender grass-fed, delicate game note</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">5.5€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Marbled Wagyu Beef</h3><p class="text-white/40 text-xs mt-1">A5-style, intensely marbled, melts on tongue</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">8€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Sliced Pork Belly</h3><p class="text-white/40 text-xs mt-1">Five-spice glazed, crispy edge when blanched</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">4.5€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Tiger Prawns</h3><p class="text-white/40 text-xs mt-1">Wild-caught, head-on, sweet &amp; firm texture</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">5.5€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Free-range Chicken Thigh</h3><p class="text-white/40 text-xs mt-1">Soy-marinated, juicy, never frozen</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">4€</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fresh Vegetables -->
+        <div class="reveal mb-14">
+          <div class="flex items-center gap-4 mb-8">
+            <span class="text-2xl">&#x1F955;</span>
+            <div>
+              <h2 class="text-xl sm:text-2xl font-semibold">Fresh Vegetables</h2>
+              <p class="text-white/30 text-xs sm:text-sm">Seasonal, locally sourced, flash-picked</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Mixed Mushroom Platter</h3><p class="text-white/40 text-xs mt-1">Enoki, shiitake, king oyster, wood ear</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">3.5€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Seasonal Leafy Greens</h3><p class="text-white/40 text-xs mt-1">Pak choi, spinach, or chrysanthemum leaves</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">2.5€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Tofu &amp; Bean Curd Set</h3><p class="text-white/40 text-xs mt-1">Silken tofu, fried puffs, bean curd skin rolls</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">3€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Lotus Root &amp; Sweet Corn</h3><p class="text-white/40 text-xs mt-1">Crunchy lotus slices, golden corn segments</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">3€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Tomato &amp; Napa Cabbage</h3><p class="text-white/40 text-xs mt-1">Fresh vine tomatoes, Chinese cabbage wedges</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">2.5€</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Handmade Staples -->
+        <div class="reveal mb-14">
+          <div class="flex items-center gap-4 mb-8">
+            <span class="text-2xl">&#x1F35C;</span>
+            <div>
+              <h2 class="text-xl sm:text-2xl font-semibold">Handmade Staples</h2>
+              <p class="text-white/30 text-xs sm:text-sm">Artisan-crafted, made fresh daily</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">La Mian (Hand-pulled Noodles)</h3><p class="text-white/40 text-xs mt-1">Freshly stretched tableside, chewy wheat noodles — our signature</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">3.5€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Shanghai Rice Cakes</h3><p class="text-white/40 text-xs mt-1">Hand-cut oval slices, chewy &amp; satisfying</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">3€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Sweet Potato Glass Noodles</h3><p class="text-white/40 text-xs mt-1">Transparent, silky, absorbs all broth flavours</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">2.5€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Pork &amp; Shrimp Wontons (8pc)</h3><p class="text-white/40 text-xs mt-1">Hand-wrapped, ginger-scallion filling</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">4€</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Signature Drinks -->
+        <div class="reveal mb-14">
+          <div class="flex items-center gap-4 mb-8">
+            <span class="text-2xl">&#x1F964;</span>
+            <div>
+              <h2 class="text-xl sm:text-2xl font-semibold">Signature Drinks</h2>
+              <p class="text-white/30 text-xs sm:text-sm">House-made refreshments to complement your meal</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Chilled Sour Plum Juice</h3><p class="text-white/40 text-xs mt-1">Traditional Chinese digestif, sweet-tart, served over ice</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">3€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Fresh Soybean Milk</h3><p class="text-white/40 text-xs mt-1">House-made, lightly sweetened, silky smooth</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">2.5€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Jasmine Iced Tea</h3><p class="text-white/40 text-xs mt-1">Premium jasmine green, chilled, hint of honey</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">2.5€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Lychee &amp; Mint Cooler</h3><p class="text-white/40 text-xs mt-1">Fresh lychee purée, muddled mint, sparkling water</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">3.5€</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Snacks -->
+        <div class="reveal mb-14">
+          <div class="flex items-center gap-4 mb-8">
+            <span class="text-2xl">&#x1F372;</span>
+            <div>
+              <h2 class="text-xl sm:text-2xl font-semibold">Snacks &amp; Starters</h2>
+              <p class="text-white/30 text-xs sm:text-sm">To share while the broth comes to a boil</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Spring Rolls (4pc)</h3><p class="text-white/40 text-xs mt-1">Crispy vegetable rolls, house sweet chili dip</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">4€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Xiao Long Bao (4pc)</h3><p class="text-white/40 text-xs mt-1">Soup dumplings, premium pork &amp; ginger filling</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">5€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Crispy Prawn Toast (4pc)</h3><p class="text-white/40 text-xs mt-1">Golden-fried, sesame-crusted, sweet chili dip</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">4.5€</span>
+            </div>
+            <div class="menu-card rounded-lg p-5 flex justify-between items-start">
+              <div><h3 class="font-semibold text-sm sm:text-base">Spicy Edamame</h3><p class="text-white/40 text-xs mt-1">Tossed in Szechuan chili oil, garlic, sea salt</p></div>
+              <span class="text-[#D4AF37] text-sm font-semibold ml-3 whitespace-nowrap">3€</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Sample Combo -->
+    <div class="py-16 sm:py-20 px-5 sm:px-8 bg-[#0F0F0F]">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="reveal">
+          <div class="inline-block border border-[#D4AF37]/20 px-4 py-1.5 mb-5 tracking-[3px] text-[0.55rem] font-semibold uppercase text-[#D4AF37]">
+            Example Combination
+          </div>
+          <h2 class="text-xl sm:text-2xl font-semibold mb-4">Your 20€ Set Could Look Like</h2>
+          <div class="bg-white/[0.02] border border-white/[0.04] rounded-xl p-6 sm:p-8 text-left max-w-lg mx-auto">
+            <div class="space-y-3 text-sm">
+              <div class="flex justify-between items-center pb-2 border-b border-white/[0.04]">
+                <span class="text-white/50 text-xs uppercase tracking-[1px]">Soup</span>
+                <span class="text-white/80">Tomato &amp; Ginger Broth</span>
+                <span class="text-[#D4AF37] text-xs">Incl.</span>
+              </div>
+              <div class="flex justify-between items-center pb-2 border-b border-white/[0.04]">
+                <span class="text-white/50 text-xs uppercase tracking-[1px]">Meat 1</span>
+                <span class="text-white/80">Premium Sliced Ribeye</span>
+                <span class="text-[#D4AF37] text-xs">5.5€</span>
+              </div>
+              <div class="flex justify-between items-center pb-2 border-b border-white/[0.04]">
+                <span class="text-white/50 text-xs uppercase tracking-[1px]">Meat 2</span>
+                <span class="text-white/80">Free-range Chicken Thigh</span>
+                <span class="text-[#D4AF37] text-xs">4€</span>
+              </div>
+              <div class="flex justify-between items-center pb-2 border-b border-white/[0.04]">
+                <span class="text-white/50 text-xs uppercase tracking-[1px]">Vegetable</span>
+                <span class="text-white/80">Mixed Mushroom Platter</span>
+                <span class="text-[#D4AF37] text-xs">3.5€</span>
+              </div>
+              <div class="flex justify-between items-center pb-2 border-b border-white/[0.04]">
+                <span class="text-white/50 text-xs uppercase tracking-[1px]">Staple</span>
+                <span class="text-white/80">La Mian Hand-pulled Noodles</span>
+                <span class="text-[#D4AF37] text-xs">3.5€</span>
+              </div>
+              <div class="flex justify-between items-center pb-2 border-b border-white/[0.04]">
+                <span class="text-white/50 text-xs uppercase tracking-[1px]">Snack</span>
+                <span class="text-white/80">Spicy Edamame</span>
+                <span class="text-[#D4AF37] text-xs">3€</span>
+              </div>
+              <div class="flex justify-between items-center pt-1">
+                <span class="text-white/50 text-xs uppercase tracking-[1px]">Drink</span>
+                <span class="text-white/80">Jasmine Iced Tea</span>
+                <span class="text-[#D4AF37] text-xs">2.5€</span>
+              </div>
+              <div class="flex justify-between items-center pt-3 mt-2 border-t border-[#D4AF37]/20">
+                <span class="text-white/40 text-xs uppercase tracking-[1px]">Total per person</span>
+                <span class="text-[#D4AF37] font-semibold text-lg">22€*</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-white/30 text-xs mt-6 leading-relaxed max-w-md mx-auto">
+            * Adjust your choices to reach ~20€. Premium Wagyu (+8€) and Xiao Long Bao (+5€) are
+            indulgence options. Minimum 2 persons per table. 10% VAT included.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       SECTION: RESERVATION
+       ============================================================ -->
+  <section id="section-reservation" class="page-section">
+
+    <div class="relative pt-16 sm:pt-[72px] min-h-[35vh] sm:min-h-[40vh] flex items-center justify-center overflow-hidden">
+      <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1600&q=80" alt="Hot pot table setting" class="w-full h-full object-cover" />
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/70 via-[#0A0A0A]/60 to-[#0A0A0A]/90 z-[1]"></div>
+      <div class="relative z-[2] text-center px-5 max-w-3xl pt-8">
+        <div class="inline-flex items-center gap-2 border border-[#D4AF37]/20 px-4 py-1.5 mb-5 tracking-[3px] text-[0.55rem] font-semibold uppercase text-[#D4AF37]">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#C41E3A]"></span>
+          Booking
+        </div>
+        <h1 class="text-[clamp(2.2rem,6vw,4rem)] font-bold leading-[1.1] mb-3">Secure Your <span class="text-[#D4AF37]">Table</span></h1>
+        <p class="text-white/50 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+          Experience the art of immersive hot pot dining. Reserve your seat and
+          let us prepare a curated evening for you.
+        </p>
+      </div>
+    </div>
+
+    <div class="py-16 sm:py-24 px-5 sm:px-8">
+      <div class="max-w-2xl mx-auto">
+
+        <form id="reservation-form" class="reveal space-y-6" novalidate>
+          <div id="form-status" class="hidden p-4 rounded-lg text-sm text-center transition-all duration-300"></div>
+
+          <div>
+            <label for="res-name" class="form-label">Full Name</label>
+            <input type="text" id="res-name" name="name" required class="form-input" placeholder="e.g. Maria Garcia" autocomplete="name" />
+            <div class="error-msg" id="res-name-error">Please enter your name.</div>
+          </div>
+
+          <div>
+            <label for="res-pax" class="form-label">Number of Guests</label>
+            <select id="res-pax" name="pax" required class="form-input">
+              <option value="" disabled selected>Select guests</option>
+              <option value="1">1 Guest</option>
+              <option value="2">2 Guests</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+              <option value="5">5 Guests</option>
+              <option value="6">6 Guests</option>
+              <option value="7">7 Guests</option>
+              <option value="8">8 Guests</option>
+              <option value="9">9 Guests</option>
+              <option value="10">10 Guests (Large Party)</option>
+            </select>
+            <div class="error-msg" id="res-pax-error">Please select the number of guests.</div>
+          </div>
+
+          <div>
+            <label for="res-date" class="form-label">Date</label>
+            <input type="date" id="res-date" name="date" required class="form-input" />
+            <div class="error-msg" id="res-date-error">Please select a valid date.</div>
+          </div>
+
+          <div>
+            <label for="res-time" class="form-label">Time</label>
+            <select id="res-time" name="time" required class="form-input">
+              <option value="" disabled selected>Select time</option>
+              <option value="12:00">12:00 PM</option>
+              <option value="12:30">12:30 PM</option>
+              <option value="13:00">1:00 PM</option>
+              <option value="13:30">1:30 PM</option>
+              <option value="14:00">2:00 PM</option>
+              <option value="19:00">7:00 PM</option>
+              <option value="19:30">7:30 PM</option>
+              <option value="20:00">8:00 PM</option>
+              <option value="20:30">8:30 PM</option>
+              <option value="21:00">9:00 PM</option>
+              <option value="21:30">9:30 PM</option>
+            </select>
+            <div class="error-msg" id="res-time-error">Please select a time.</div>
+          </div>
+
+          <div>
+            <label for="res-contact" class="form-label">Email or Phone</label>
+            <input type="text" id="res-contact" name="contact" required class="form-input" placeholder="e.g. maria@example.com or +34 612 345 678" autocomplete="tel" />
+            <div class="error-msg" id="res-contact-error">Please provide an email or phone number.</div>
+          </div>
+
+          <div>
+            <label for="res-notes" class="form-label">Special Requests <span class="text-white/20">(optional)</span></label>
+            <textarea id="res-notes" name="notes" rows="3" class="form-input resize-none" placeholder="Allergies, dietary preferences, celebration notes..."></textarea>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" class="w-full sm:w-auto bg-[#C41E3A] hover:bg-[#A01830] text-white text-[0.7rem] font-semibold uppercase tracking-[2.5px] px-10 py-4 transition-all duration-300 flex items-center justify-center gap-3">
+              <span id="btn-text">Confirm Reservation</span>
+              <svg id="btn-spinner" class="hidden w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <p class="text-white/15 text-[0.6rem] text-center mt-4">&#x1F512; Your data is handled securely. We'll confirm your booking within 2 hours.</p>
+        </form>
+
+        <!-- Confirmation Card -->
+        <div id="confirmation-card" class="mt-8 max-w-lg mx-auto">
+          <div class="border border-[#D4AF37]/20 bg-[#D4AF37]/[0.03] rounded-xl p-8 text-center">
+            <div class="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center mx-auto mb-5">
+              <svg class="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Booking Confirmed!</h3>
+            <p class="text-white/50 text-sm mb-4">Your reservation has been received successfully.</p>
+            <div class="bg-white/[0.03] border border-white/[0.04] rounded-lg p-4 mb-4">
+              <p class="text-[0.55rem] uppercase tracking-[2px] text-white/30 mb-1">Confirmation Number</p>
+              <p id="confirmation-number" class="text-[#D4AF37] font-mono text-xl font-bold tracking-wider"></p>
+            </div>
+            <p class="text-white/30 text-xs leading-relaxed">
+              We've sent the details to your contact. A member of our team
+              will confirm your table within 2 hours. Thank you for choosing HAO HOT POT!
+            </p>
+            <button onclick="resetForm()" class="mt-6 text-[0.65rem] uppercase tracking-[2px] text-[#D4AF37]/60 hover:text-[#D4AF37] transition-colors">
+              &larr; Make Another Reservation
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="py-16 px-5 sm:px-8 bg-[#0F0F0F]">
+      <div class="max-w-4xl mx-auto grid sm:grid-cols-3 gap-5">
+        <div class="reveal border border-white/[0.04] bg-white/[0.02] rounded-xl p-6 text-center">
+          <div class="text-[#D4AF37] text-xl mb-3">
+            <svg class="w-6 h-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-sm mb-1">Opening Hours</h3>
+          <p class="text-white/40 text-xs">Mon&ndash;Sun: 12:00&ndash;15:30<br />19:00&ndash;22:30</p>
+        </div>
+        <div class="reveal delay-1 border border-white/[0.04] bg-white/[0.02] rounded-xl p-6 text-center">
+          <div class="text-[#D4AF37] text-xl mb-3">
+            <svg class="w-6 h-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-sm mb-1">Location</h3>
+          <p class="text-white/40 text-xs">Carrer del Pelai, 21<br />46002 València</p>
+        </div>
+        <div class="reveal delay-2 border border-white/[0.04] bg-white/[0.02] rounded-xl p-6 text-center">
+          <div class="text-[#D4AF37] text-xl mb-3">
+            <svg class="w-6 h-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-sm mb-1">Rating</h3>
+          <p class="text-white/40 text-xs">&#9733;&#9733;&#9733;&#9733;&#9734; 4.5 / 5<br />"Best hot pot in Valencia"</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       FOOTER (shared across all sections)
+       ============================================================ -->
+  <footer class="bg-[#050505] border-t border-white/[0.04] py-14 px-5 sm:px-8">
+    <div class="max-w-5xl mx-auto text-center">
+      <div class="font-['Playfair_Display'] text-xl sm:text-2xl font-semibold mb-2">
+        HAO <span class="text-[#D4AF37] font-normal">HOT POT</span>
+      </div>
+      <p class="font-['Playfair_Display'] italic text-white/30 text-sm mb-6">Valencia's premier hot pot destination</p>
+      <div class="w-12 h-[1px] bg-gradient-to-r from-[#C41E3A] to-[#D4AF37] mx-auto mb-6"></div>
+
+      <address class="not-italic text-white/40 text-sm leading-relaxed mb-8">
+        <svg class="w-4 h-4 inline-block mr-2 text-[#D4AF37]/60 mb-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+        </svg>
+        Carrer del Pelai, 21, 46002 València
+      </address>
+
+      <div class="flex justify-center gap-8 flex-wrap mb-8">
+        <a href="#" onclick="switchSection('home');return false;" class="text-[0.6rem] uppercase tracking-[2px] text-white/25 hover:text-[#D4AF37] transition-colors duration-300">Home</a>
+        <a href="#" onclick="switchSection('menu');return false;" class="text-[0.6rem] uppercase tracking-[2px] text-white/25 hover:text-[#D4AF37] transition-colors duration-300">Menu</a>
+        <a href="#" onclick="switchSection('reservation');return false;" class="text-[0.6rem] uppercase tracking-[2px] text-white/25 hover:text-[#D4AF37] transition-colors duration-300">Reservation</a>
+      </div>
+
+      <div class="flex justify-center gap-6 flex-wrap mb-8">
+        <a href="#" onclick="alert('Instagram: @haohotpot_valencia');return false;" class="text-[0.6rem] uppercase tracking-[2px] text-white/20 hover:text-[#D4AF37] transition-colors duration-300">Instagram</a>
+        <a href="#" onclick="alert('WeChat: HAO_HotPot_Val');return false;" class="text-[0.6rem] uppercase tracking-[2px] text-white/20 hover:text-[#D4AF37] transition-colors duration-300">WeChat</a>
+        <a href="tel:+34961234567" class="text-[0.6rem] uppercase tracking-[2px] text-white/20 hover:text-[#D4AF37] transition-colors duration-300">+34 96 123 45 67</a>
+        <a href="mailto:hello@haohotpot.com" class="text-[0.6rem] uppercase tracking-[2px] text-white/20 hover:text-[#D4AF37] transition-colors duration-300">hello@haohotpot.com</a>
+      </div>
+
+      <p class="text-[0.6rem] text-white/15">
+        &copy; 2026 HAO HOT POT. All rights reserved. &mdash; Valencia, Spain
+      </p>
+      <p class="text-[0.5rem] text-white/10 mt-2">
+        Travel Management Project &middot; Smart Restaurant &amp; Cultural Integration
+      </p>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       MODAL: QR Scan to Order
+       QR code points to STATIC_URL/#menu so scanning with a phone
+       camera opens the menu section directly.
+       ============================================================ -->
+  <div id="qr-modal" class="modal-overlay" onclick="if(event.target===this)closeQrModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button onclick="closeQrModal()" class="absolute top-4 right-4 text-white/30 hover:text-white/60 transition-colors text-xl leading-none bg-transparent border-none cursor-pointer" style="position:absolute;top:16px;right:20px;font-size:24px;">&times;</button>
+
+      <div class="text-[#D4AF37] text-[0.55rem] uppercase tracking-[3px] font-semibold mb-2">Scan to Order</div>
+      <h3 class="text-xl font-semibold mb-1">Digital Menu</h3>
+      <p class="text-white/40 text-xs mb-4">Point your camera at the QR code to browse, order &amp; pay</p>
+
+      <div id="qr-code-container"></div>
+      <p id="qr-url-display" class="text-white/20 text-[0.5rem] uppercase tracking-[2px] mt-2 mb-6"></p>
+
+      <div class="flex flex-col gap-3">
+        <a href="#" onclick="switchSection('reservation');closeQrModal();return false;"
+           class="bg-[#C41E3A] hover:bg-[#A01830] text-white text-[0.65rem] font-semibold uppercase tracking-[2px] py-3.5 rounded-lg transition-all duration-300">
+          Book a Table
+        </a>
+        <a href="#" onclick="switchSection('menu');closeQrModal();return false;"
+           class="border border-[#D4AF37]/30 text-[#D4AF37] hover:bg-[#D4AF37]/10 text-[0.65rem] font-semibold uppercase tracking-[2px] py-3.5 rounded-lg transition-all duration-300">
+          View Menu
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: Immersive Experience
+       ============================================================ -->
+  <div id="modal-immersive" class="modal-overlay" onclick="if(event.target===this)closeUspModal('immersive')">
+    <div class="modal-content modal-content--wide" onclick="event.stopPropagation()">
+      <button onclick="closeUspModal('immersive')" class="absolute top-4 right-4 text-white/30 hover:text-white/60 transition-colors text-xl leading-none bg-transparent border-none cursor-pointer" style="position:absolute;top:16px;right:20px;font-size:24px;">&times;</button>
+      <div class="text-left">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+            </svg>
+          </div>
+          <div>
+            <div class="text-[#D4AF37] text-[0.55rem] uppercase tracking-[3px] font-semibold">Core Value</div>
+            <h3 class="text-2xl font-semibold">Immersive Experience</h3>
+          </div>
+        </div>
+        <div class="space-y-4 text-white/50 text-sm leading-relaxed">
+          <p><strong class="text-white/70">Inspired by Haidilao's legendary waiting-area experience,</strong> HAO HOT POT transforms every visit into a full-sensory journey. Before you even sit down, you're welcomed into a space designed to transport you — curated lighting that shifts with the time of day, ambient soundscapes blending traditional Chinese instruments with modern chill beats, and the aromatic embrace of 12-hour-simmered broths.</p>
+          <p><strong class="text-white/70">Real-world examples from Haidilao:</strong> The chain is famous for offering complimentary nail art, shoe shining, and board games while guests wait for their table. Birthday celebrations include a full noodle-dance performance and a complimentary dessert with a candle. Private dining rooms feature smart glass that switches between transparent and frosted at the touch of a button. Our version brings this same theatrical energy to Valencia.</p>
+          <p>Every detail — from the copper pot designs to the staff's training in performance service — is calibrated to make you feel like the protagonist of your own dining story.</p>
+        </div>
+        <div class="mt-6 border border-[#D4AF37]/10 bg-[#D4AF37]/[0.02] rounded-lg p-4">
+          <p class="text-white/30 text-xs leading-relaxed"><strong class="text-[#D4AF37]/70">Academic Note:</strong> Immersive dining experiences are a key case study in experiential travel theory within the Travel Management curriculum, demonstrating how multi-sensory engagement increases perceived value and guest retention.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: La Mian Show (with YouTube video embed)
+       Video sourced from YouTube search for "Haidilao La Mian Show"
+       ============================================================ -->
+  <div id="modal-lamian" class="modal-overlay" onclick="if(event.target===this)closeUspModal('lamian')">
+    <div class="modal-content modal-content--wide" onclick="event.stopPropagation()">
+      <button onclick="closeUspModal('lamian')" class="absolute top-4 right-4 text-white/30 hover:text-white/60 transition-colors text-xl leading-none bg-transparent border-none cursor-pointer" style="position:absolute;top:16px;right:20px;font-size:24px;">&times;</button>
+      <div class="text-left">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
+            </svg>
+          </div>
+          <div>
+            <div class="text-[#D4AF37] text-[0.55rem] uppercase tracking-[3px] font-semibold">Signature Performance</div>
+            <h3 class="text-2xl font-semibold">La Mian Show</h3>
+          </div>
+        </div>
+
+        <!-- YouTube video embed -->
+        <div class="video-container mb-5">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/xZ4PiGH82Qs?rel=0&modestbranding=1"
+            title="Haidilao Hand-Pulled Noodle Lamian Dance Show"
+            referrerpolicy="strict-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+
+        <div class="space-y-4 text-white/50 text-sm leading-relaxed">
+          <p><strong class="text-white/70">The art of La Mian (拉面)</strong> — hand-pulled noodles — is one of China's oldest culinary traditions, dating back over 400 years to the Lanzhou region. At HAO HOT POT, this ancient craft becomes live theatre.</p>
+          <p><strong class="text-white/70">What you'll see:</strong> A trained La Mian master wheels a cart to your table carrying a block of rested dough. In one continuous fluid motion, they stretch, fold, twist, and pull — transforming that single block into dozens of perfectly uniform strands in under 60 seconds.</p>
+          <p><strong class="text-white/70">Haidilao's influence:</strong> Haidilao made the noodle dance famous globally. Their performers often add dramatic flourishes — spinning the noodles like a lasso, stretching them to arm's length, even performing blindfolded. We bring that same showmanship to Valencia.</p>
+        </div>
+        <div class="mt-6 border border-[#D4AF37]/10 bg-[#D4AF37]/[0.02] rounded-lg p-4">
+          <p class="text-white/30 text-xs leading-relaxed"><strong class="text-[#D4AF37]/70">Academic Note:</strong> The La Mian Show represents <strong class="text-white/50">cultural heritage presentation</strong> within the Smart Restaurant framework — showcasing how traditional culinary techniques can be preserved and elevated through theatrical hospitality.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: Premium Service
+       ============================================================ -->
+  <div id="modal-service" class="modal-overlay" onclick="if(event.target===this)closeUspModal('service')">
+    <div class="modal-content modal-content--wide" onclick="event.stopPropagation()">
+      <button onclick="closeUspModal('service')" class="absolute top-4 right-4 text-white/30 hover:text-white/60 transition-colors text-xl leading-none bg-transparent border-none cursor-pointer" style="position:absolute;top:16px;right:20px;font-size:24px;">&times;</button>
+      <div class="text-left">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+            </svg>
+          </div>
+          <div>
+            <div class="text-[#D4AF37] text-[0.55rem] uppercase tracking-[3px] font-semibold">Core Value</div>
+            <h3 class="text-2xl font-semibold">Premium Service</h3>
+          </div>
+        </div>
+        <div class="space-y-4 text-white/50 text-sm leading-relaxed">
+          <p><strong class="text-white/70">Haidilao has been called "the Disneyland of hot pot"</strong> for a reason. Their service philosophy is legendary: anticipate every need before the guest articulates it. At HAO HOT POT, we've studied and adapted this philosophy for the Valencia market.</p>
+          <ul class="space-y-2">
+            <li class="flex gap-2"><span class="text-[#D4AF37] mt-0.5">&#x2022;</span><span><strong class="text-white/60">Personal Host:</strong> Every table is assigned a dedicated host who introduces the menu, guides broth selection, and checks in at precisely the right moments.</span></li>
+            <li class="flex gap-2"><span class="text-[#D4AF37] mt-0.5">&#x2022;</span><span><strong class="text-white/60">Thoughtful Amenities:</strong> Phone charging stations, hair ties, glasses cleaning cloths, aprons, and protective bags for your belongings — all complimentary.</span></li>
+            <li class="flex gap-2"><span class="text-[#D4AF37] mt-0.5">&#x2022;</span><span><strong class="text-white/60">Celebration Service:</strong> Custom desserts, Polaroid photos, and staff performances for special occasions.</span></li>
+            <li class="flex gap-2"><span class="text-[#D4AF37] mt-0.5">&#x2022;</span><span><strong class="text-white/60">Digital Profile:</strong> Our Smart Reservation system remembers your past orders, preferred broths, and allergies.</span></li>
+          </ul>
+        </div>
+        <div class="mt-6 border border-[#D4AF37]/10 bg-[#D4AF37]/[0.02] rounded-lg p-4">
+          <p class="text-white/30 text-xs leading-relaxed"><strong class="text-[#D4AF37]/70">Academic Note:</strong> This service model aligns with <strong class="text-white/50">Smart Hospitality</strong> research in Travel Management, where technology-enabled personalisation creates competitive advantage in the experiential economy.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       JAVASCRIPT
+       Section toggling, QR (static URL), YouTube embed,
+       Google Maps, form handling, scroll reveal, particles.
+       ============================================================ -->
+  <script>
+    (function() {
+      'use strict';
+
+      /* ==========================================================
+         CONFIGURABLE STATIC URL
+         ==========================================================
+         Replace this URL with your production domain before
+         deploying (e.g., Vercel, Netlify, etc.).
+         The QR code will encode this URL so scanning with a
+         phone camera opens the Menu section directly.
+         ========================================================== */
+      var STATIC_URL = 'https://hao-hot-pot.vercel.app';
+
+      /* ----------------------------------------------------------
+         A. SECTION TOGGLING
+         ---------------------------------------------------------- */
+      var sections = {
+        home: document.getElementById('section-home'),
+        menu: document.getElementById('section-menu'),
+        reservation: document.getElementById('section-reservation')
+      };
+      var navLinks = document.querySelectorAll('.nav-link');
+
+      window.switchSection = function(name) {
+        Object.keys(sections).forEach(function(key) {
+          sections[key].classList.remove('active');
+        });
+        if (sections[name]) {
+          sections[name].classList.add('active');
+        }
+        navLinks.forEach(function(link) {
+          var section = link.getAttribute('data-section');
+          if (section === name) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+        history.pushState(null, '', '#' + name);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(runReveal, 300);
+      };
+
+      function initSectionFromHash() {
+        var hash = window.location.hash.replace('#', '') || 'home';
+        if (['home','menu','reservation'].indexOf(hash) === -1) hash = 'home';
+        switchSection(hash);
+      }
+
+      /* ----------------------------------------------------------
+         B. SCROLL REVEAL
+         ---------------------------------------------------------- */
+      var revealObserver;
+      function runReveal() {
+        var els = document.querySelectorAll('.reveal:not(.show)');
+        if (els.length === 0) return;
+        if (revealObserver) revealObserver.disconnect();
+        revealObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) entry.target.classList.add('show');
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        els.forEach(function(el) { revealObserver.observe(el); });
+      }
+
+      /* ----------------------------------------------------------
+         C. QR MODAL — Static URL
+         Generates a QR code pointing to STATIC_URL/#menu so that
+         scanning it with a phone camera directly opens the menu.
+         ---------------------------------------------------------- */
+      var qrModal = document.getElementById('qr-modal');
+      var qrGenerated = false;
+
+      window.openQrModal = function() {
+        if (!qrGenerated) {
+          generateQRCode();
+          qrGenerated = true;
+        }
+        qrModal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      };
+
+      window.closeQrModal = function() {
+        qrModal.classList.remove('open');
+        document.body.style.overflow = '';
+      };
+
+      function generateQRCode() {
+        var container = document.getElementById('qr-code-container');
+        var urlDisplay = document.getElementById('qr-url-display');
+        if (!container) return;
+        container.innerHTML = '';
+
+        // Use the static URL + #menu hash for deep-linking
+        var qrUrl = STATIC_URL + '/#menu';
+        if (urlDisplay) urlDisplay.textContent = qrUrl;
+
+        new QRCode(container, {
+          text: qrUrl,
+          width: 180,
+          height: 180,
+          colorDark: '#C41E3A',
+          colorLight: '#FFFFFF',
+          correctLevel: QRCode.CorrectLevel.H
+        });
+      }
+
+      // Close modals on Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          if (qrModal.classList.contains('open')) closeQrModal();
+          ['immersive','lamian','service'].forEach(closeUspModal);
+        }
+      });
+
+      /* ----------------------------------------------------------
+         D. USP MODALS
+         ---------------------------------------------------------- */
+      window.openUspModal = function(type) {
+        var el = document.getElementById('modal-' + type);
+        if (el) { el.classList.add('open'); document.body.style.overflow = 'hidden'; }
+      };
+      window.closeUspModal = function(type) {
+        var el = document.getElementById('modal-' + type);
+        if (el) { el.classList.remove('open'); document.body.style.overflow = ''; }
+      };
+
+      /* ----------------------------------------------------------
+         E. RESERVATION FORM + CONFIRMATION
+         ---------------------------------------------------------- */
+      var form = document.getElementById('reservation-form');
+      var confirmCard = document.getElementById('confirmation-card');
+      var confirmNum = document.getElementById('confirmation-number');
+      var statusEl = document.getElementById('form-status');
+      var btnText = document.getElementById('btn-text');
+      var btnSpinner = document.getElementById('btn-spinner');
+
+      var fields = [
+        { id: 'res-name', error: 'res-name-error' },
+        { id: 'res-pax', error: 'res-pax-error' },
+        { id: 'res-date', error: 'res-date-error' },
+        { id: 'res-time', error: 'res-time-error' },
+        { id: 'res-contact', error: 'res-contact-error' }
+      ];
+
+      var dateInput = document.getElementById('res-date');
+      if (dateInput) {
+        var today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+        dateInput.value = today;
+      }
+
+      function showFieldError(inputId, errorId) {
+        var input = document.getElementById(inputId);
+        var error = document.getElementById(errorId);
+        if (input) input.classList.add('error');
+        if (error) error.style.display = 'block';
+      }
+      function clearFieldError(inputId, errorId) {
+        var input = document.getElementById(inputId);
+        var error = document.getElementById(errorId);
+        if (input) input.classList.remove('error');
+        if (error) error.style.display = 'none';
+      }
+      function setStatus(msg, type) {
+        statusEl.classList.remove('hidden', 'bg-green-500/10', 'text-green-400', 'bg-red-500/10', 'text-red-400');
+        statusEl.textContent = msg;
+        statusEl.classList.add(type === 'success' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400');
+      }
+
+      fields.forEach(function(f) {
+        var el = document.getElementById(f.id);
+        if (el) {
+          el.addEventListener('input', function() { clearFieldError(f.id, f.error); });
+          el.addEventListener('change', function() { clearFieldError(f.id, f.error); });
+        }
+      });
+
+      function generateConfirmation() {
+        var prefix = 'HAO';
+        var ts = Date.now().toString(36).toUpperCase();
+        var rand = Math.random().toString(36).substring(2, 6).toUpperCase();
+        return prefix + '-' + ts.slice(-4) + rand;
+      }
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        statusEl.classList.add('hidden');
+        var valid = true;
+        fields.forEach(function(f) {
+          clearFieldError(f.id, f.error);
+          var el = document.getElementById(f.id);
+          if (!el || !el.value.trim()) { showFieldError(f.id, f.error); valid = false; }
+        });
+        if (!valid) { setStatus('Please fill in all required fields.', 'error'); return; }
+
+        btnText.textContent = 'Submitting...';
+        btnSpinner.classList.remove('hidden');
+        form.querySelector('button[type="submit"]').disabled = true;
+
+        setTimeout(function() {
+          var confNum = generateConfirmation();
+          confirmNum.textContent = confNum;
+          form.style.display = 'none';
+          confirmCard.classList.add('show');
+          btnText.textContent = 'Confirm Reservation';
+          btnSpinner.classList.add('hidden');
+          form.querySelector('button[type="submit"]').disabled = false;
+        }, 1500);
+      });
+
+      window.resetForm = function() {
+        confirmCard.classList.remove('show');
+        form.style.display = 'block';
+        form.reset();
+        if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+        statusEl.classList.add('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      /* ----------------------------------------------------------
+         F. FLOATING PARTICLES
+         ---------------------------------------------------------- */
+      var particlesContainer = document.getElementById('particles');
+      function createParticle() {
+        if (!particlesContainer) return;
+        var p = document.createElement('div');
+        p.className = 'particle';
+        var s = Math.random() * 6 + 2;
+        p.style.width = s + 'px'; p.style.height = s + 'px';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.bottom = '-10px';
+        p.style.animationDuration = (Math.random() * 8 + 6) + 's';
+        p.style.animationDelay = (Math.random() * 5) + 's';
+        particlesContainer.appendChild(p);
+        setTimeout(function() { if (p.parentNode) p.remove(); }, 14000);
+      }
+      var particleInt;
+      function startParticles() {
+        for (var i = 0; i < 10; i++) setTimeout(createParticle, i * 300);
+        particleInt = setInterval(createParticle, 900);
+      }
+      function stopParticles() { if (particleInt) { clearInterval(particleInt); particleInt = null; } }
+      if (window.innerWidth >= 480) startParticles();
+      var resizeTimer;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+          if (window.innerWidth >= 480) { if (!particleInt) startParticles(); }
+          else { stopParticles(); }
+        }, 300);
+      });
+
+      /* ----------------------------------------------------------
+         G. INIT
+         ---------------------------------------------------------- */
+      initSectionFromHash();
+      runReveal();
+
+      window.addEventListener('hashchange', function() {
+        var hash = window.location.hash.replace('#', '') || 'home';
+        if (['home','menu','reservation'].indexOf(hash) !== -1) switchSection(hash);
+      });
+
+      console.log('%c HAO HOT POT %c Smart Restaurant ', 'background:#C41E3A; color:#D4AF37; font-size:18px; font-weight:bold; padding:6px 10px; border-radius:4px 0 0 4px;', 'background:#D4AF37; color:#0A0A0A; font-size:18px; font-weight:bold; padding:6px 10px; border-radius:0 4px 4px 0;');
+      console.log('%c Travel Management Project — Smart Campus & Cultural Integration', 'color: #D4AF37; font-size: 11px;');
+      console.log('%c QR Code URL: ' + STATIC_URL + '/#menu', 'color: #D4AF37; font-size: 10px;');
+
+    })();
+  </script>
+
+</body>
+</html>
